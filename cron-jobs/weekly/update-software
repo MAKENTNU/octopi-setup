@@ -5,5 +5,10 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
 
+# Get the directory containing this file, resolving symlinks (based on code from https://stackoverflow.com/a/51651602)
+script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+home_dir="$(readlink -e "$script_dir/../../..")"
+
+cd "$home_dir"
 # Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
-../oprint/bin/python -m octoprint plugins softwareupdate:update
+./oprint/bin/python -m octoprint plugins softwareupdate:update

@@ -31,6 +31,9 @@ raspi-config nonint do_camera 0
 
 python3 customize_octopi_config.py
 
+# Register the cron job
+ln -sf "$update_script" /etc/cron.weekly/update-software
+# Execute the cron job script immediately
 eval "$update_script"
 
 
