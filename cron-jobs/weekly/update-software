@@ -18,12 +18,17 @@ else
   exit 1
 fi
 
+octoprint_python="$home_dir/oprint/bin/python"
+
 # Switch to the RPi's user, to prevent potentially setting `root` as the owner of any files the below commands might create/modify
 sudo su "$username" <<HERE
 set -euo pipefail
 
 cd "$home_dir"
-# Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
-./oprint/bin/python -m octoprint plugins softwareupdate:update
+
+# Update pip before updating other packages below
+eval "$octoprint_python -m pip install -U pip"
+# Update OctoPrint and plugins (command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage)
+eval "$octoprint_python -m octoprint plugins softwareupdate:update"
 
 HERE
