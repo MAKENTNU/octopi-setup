@@ -9,6 +9,21 @@ sudo apt autoremove -y
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 home_dir="$(readlink -e "$script_dir/../../..")"
 
+user_home_dir_regex="^/home/([^/]+?)/$"
+if [[ "$home_dir/" =~ $user_home_dir_regex ]]; then
+  username=${BASH_REMATCH[1]}
+else
+  >&2 echo "Unable to parse username from the (presumed) home directory of the RPi's user: $home_dir"
+  >&2 echo "  (script location: $script_dir)"
+  exit 1
+fi
+
+# Switch to the RPi's user, to prevent potentially setting `root` as the owner of any files the below commands might create/modify
+sudo su "$username" <<HERE
+set -euo pipefail
+
 cd "$home_dir"
 # Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
 ./oprint/bin/python -m octoprint plugins softwareupdate:update
+
+HERE
