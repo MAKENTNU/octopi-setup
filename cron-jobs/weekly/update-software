@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+sudo apt update
+sudo apt upgrade -y
+sudo apt autoremove -y
+
+# Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
+../oprint/bin/python -m octoprint plugins softwareupdate:update

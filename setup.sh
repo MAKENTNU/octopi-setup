@@ -6,6 +6,7 @@ set -euo pipefail
 home_dir=$(readlink -f "..")
 # Get the directory containing this file, resolving symlinks (based on code from https://stackoverflow.com/a/51651602)
 repo_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+update_script="$repo_dir/cron-jobs/weekly/update-software"
 octoprint_python_executable="$home_dir/oprint/bin/python"
 
 if [[ "$(whoami)" = "root" ]]; then
@@ -30,11 +31,7 @@ raspi-config nonint do_camera 0
 
 python3 customize_octopi_config.py
 
-apt update
-apt upgrade -y
-
-# Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
-"../oprint/bin/python" -m octoprint plugins softwareupdate:update
+eval "$update_script"
 
 
 reboot
