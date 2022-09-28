@@ -10,6 +10,7 @@ but doing this ensures that it's set up properly and that the software is up-to-
 1. Clone this repository: `git clone https://github.com/MAKENTNU/octopi-setup.git`
 1. Enter the newly created `octopi-setup` folder: `cd octopi-setup/`
 1. Run the setup script: `./setup.sh`
+   * *This script is idempotent, so it should be safe to run multiple times on the same system - for whatever reason*
 
 The RPi will reboot once the script is done.
 

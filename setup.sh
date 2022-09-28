@@ -1,5 +1,7 @@
 #!/bin/bash
 set -euo pipefail
+# NOTE: Make sure that this script is idempotent;
+#       if some code is added that makes this impossible, the README should also be changed to reflect this
 
 if [[ "$(whoami)" = "root" ]]; then
   >&2 echo "Do not run this script as the root user (through e.g. 'sudo')"
