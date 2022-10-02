@@ -26,6 +26,9 @@ register_and_run_weekly_cron_job() {
   local link_name="/etc/cron.weekly/$script_filename"
   # Register the cron job
   ln -sf "$cron_job_script" "$link_name"
+  echo "+ Added symlink '$link_name' -> '$cron_job_script'"
+
+  echo "+ Executing '$script_filename'..."
   # Execute the cron job script
   eval "$link_name"
 }
@@ -42,6 +45,7 @@ cd "$repo_dir"
 # Enable camera
 if [[ $camera_disabled != 0 ]]; then
   raspi-config nonint do_camera 0
+  echo "+ Enabled Raspberry Pi camera"
 fi
 
 python3 -m python_scripts.customize_octopi_config

@@ -1,9 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+set -x
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
+set +x
 
 # Get the directory containing this file, resolving symlinks (based on code from https://stackoverflow.com/a/51651602)
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
@@ -20,15 +22,21 @@ fi
 
 octoprint_python="$home_dir/oprint/bin/python"
 
+echo "+ Executing commands as user '$username':"
 # Switch to the RPi's user, to prevent potentially setting `root` as the owner of any files the below commands might create/modify
 sudo su "$username" <<HERE
 set -euo pipefail
 
 cd "$home_dir"
 
+echo "+ Updating pip..."
 # Update pip before updating other packages below
 eval "$octoprint_python -m pip install -U pip"
-# Update OctoPrint and plugins (command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage)
+
+echo "+ Updating OctoPrint and plugins..."
+# Command found at https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#command-line-usage
 eval "$octoprint_python -m octoprint plugins softwareupdate:update"
 
 HERE
+
+echo "+ Finished executing commands as user '$username'"
