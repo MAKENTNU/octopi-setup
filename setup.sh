@@ -30,6 +30,8 @@ register_and_run_weekly_cron_job() {
   eval "$link_name"
 }
 
+camera_disabled=$(sudo raspi-config nonint get_camera)
+
 # This is mainly done to not have to re-input the password for `sudo` after having upgraded packages,
 # as that often takes long enough to make the OS re-prompt for the password
 sudo su root <<HERE
@@ -38,7 +40,9 @@ set -euo pipefail
 cd "$repo_dir"
 
 # Enable camera
-raspi-config nonint do_camera 0
+if [[ $camera_disabled != 0 ]]; then
+  raspi-config nonint do_camera 0
+fi
 
 python3 -m python_scripts.customize_octopi_config
 
