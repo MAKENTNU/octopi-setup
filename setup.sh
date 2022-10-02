@@ -29,7 +29,7 @@ cd "$repo_dir"
 # Enable camera
 raspi-config nonint do_camera 0
 
-python3 customize_octopi_config.py
+python3 -m python_scripts.customize_octopi_config
 
 # Register the cron job
 ln -sf "$update_script" /etc/cron.weekly/update-software
