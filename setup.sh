@@ -44,7 +44,6 @@ python3 -m python_scripts.customize_octopi_config
 
 $(declare -f register_and_run_weekly_cron_job)
 register_and_run_weekly_cron_job "$repo_dir/cron-jobs/weekly/update-software"
+register_and_run_weekly_cron_job "$repo_dir/cron-jobs/weekly/zzz-reboot"
 
-
-reboot
 HERE
