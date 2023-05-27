@@ -1,6 +1,7 @@
 import re
-from urllib.request import urlopen
+from difflib import unified_diff
 from pathlib import Path
+from urllib.request import urlopen
 
 
 # Each tuple below does the following job:
@@ -34,7 +35,8 @@ for line_starting_with, replacement_str in REPLACEMENT_STRINGS:
 if new_file_contents != file_contents:
     octopi_config_file.write_text(new_file_contents)
 
-    print(f"Wrote the following lines to {octopi_config_file}:")
-    for _, replacement_str in REPLACEMENT_STRINGS:
-        print(replacement_str)
+    print(f"Wrote to {octopi_config_file} with the following diff:")
+    for diff_line in unified_diff(file_contents.splitlines(keepends=True), new_file_contents.splitlines(keepends=True),
+                                  fromfile=f"{octopi_config_file} (old)", tofile=f"{octopi_config_file} (new)"):
+        print(diff_line, end="")
     print()
